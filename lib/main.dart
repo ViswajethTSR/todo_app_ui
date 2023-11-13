@@ -186,13 +186,12 @@ class _TodoListState extends State<TodoList> {
   Widget buildBody() {
     return SingleChildScrollView(
       child: Container(
-        clipBehavior: Clip.hardEdge,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.deepPurpleAccent, Colors.indigo],
           ),
         ),
-        height: 900,
+        height: 700,
         child: ListView.builder(
           itemCount: todos.length,
           itemBuilder: (context, index) {
@@ -270,7 +269,7 @@ class _TodoListState extends State<TodoList> {
     return PreferredSize(
       preferredSize: Size.fromHeight(80.0),
       child: AppBar(
-        title: Text('Todo App'),
+        title: Text('TaskTrak'),
         centerTitle: true,
         backgroundColor: Colors.blue, // Set your desired background color
         elevation: 0, // Remove the shadow below the app bar
