@@ -69,7 +69,56 @@ class _TodoListState extends State<TodoList> {
     }
   }
 
-  Future<void> updateTodo(String id, bool completed) async {
+  void _editTodoTitleDialog(BuildContext context, Todo todo) {
+    TextEditingController editController = TextEditingController();
+    editController.text = todo.title;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Edit Todo'),
+          content: TextField(
+            controller: editController,
+            decoration: InputDecoration(labelText: 'New Todo Title'),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Save'),
+              onPressed: () {
+                updateTodoTitle(todo.title, editController.text);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> updateTodoTitle(String currentTitle, String newTitle) async {
+    final response = await http.put(
+      Uri.parse('$api/update_todo_title'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({'currentTitle': currentTitle, 'newTitle': newTitle}),
+    );
+
+    if (response.statusCode == 200) {
+      fetchTodos();
+    } else {
+      throw Exception('Failed to update todo title');
+    }
+  }
+
+  Future<void> updateTodoState(String id, bool completed) async {
     final response = await http.put(
       Uri.parse('$api/update_todos/$id'),
       headers: <String, String>{
@@ -97,15 +146,6 @@ class _TodoListState extends State<TodoList> {
     } catch (error) {
       print('Error deleting todo: $error');
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: buildAppBar(),
-      body: buildBody(),
-      floatingActionButton: buildAddTaskButton(context),
-    );
   }
 
   FloatingActionButton buildAddTaskButton(BuildContext context) {
@@ -181,14 +221,25 @@ class _TodoListState extends State<TodoList> {
       leading: Checkbox(
         value: todo.completed,
         onChanged: (bool? value) {
-          updateTodo(todo.title, value!);
+          updateTodoState(todo.title, value!);
         },
       ),
-      trailing: IconButton(
-        icon: Icon(Icons.delete),
-        onPressed: () {
-          deleteTodo(todo.title);
-        },
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+              _editTodoTitleDialog(context, todo);
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {
+              deleteTodo(todo.title);
+            },
+          ),
+        ],
       ),
     );
   }
@@ -212,6 +263,15 @@ class _TodoListState extends State<TodoList> {
           ),
         ),
       ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: buildAppBar(),
+      body: buildBody(),
+      floatingActionButton: buildAddTaskButton(context),
     );
   }
 }
