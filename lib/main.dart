@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:viswa_todo_app/models/items.dart';
 
-import 'package:viswa_todo_app/custom_designs/border.dart';
+import 'package:viswa_todo_app/custom_designs/app_bar_clipper.dart';
 
 void main() {
   runApp(MyApp());
@@ -186,6 +186,12 @@ class _TodoListState extends State<TodoList> {
   Widget buildBody() {
     return SingleChildScrollView(
       child: Container(
+        clipBehavior: Clip.hardEdge,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.deepPurpleAccent, Colors.indigo],
+          ),
+        ),
         height: 900,
         child: ListView.builder(
           itemCount: todos.length,
@@ -194,18 +200,20 @@ class _TodoListState extends State<TodoList> {
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                height: 60,
+                height: 80,
                 decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey,
-                        blurRadius: 10,
-                      )
-                    ]),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.shade300,
+                      blurRadius: 12,
+                      offset: Offset(0, 4),
+                    )
+                  ],
+                ),
                 child: buildCards(todo),
               ),
             );
@@ -217,7 +225,15 @@ class _TodoListState extends State<TodoList> {
 
   ListTile buildCards(Todo todo) {
     return ListTile(
-      title: Text(todo.title),
+      title: Text(
+        todo.title,
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: todo.completed ? Colors.grey : Colors.black87,
+          decoration: todo.completed ? TextDecoration.lineThrough : null,
+        ),
+      ),
       leading: Checkbox(
         value: todo.completed,
         onChanged: (bool? value) {
@@ -228,13 +244,19 @@ class _TodoListState extends State<TodoList> {
         mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
-            icon: Icon(Icons.edit),
+            icon: Icon(
+              Icons.edit,
+              color: Colors.indigo,
+            ),
             onPressed: () {
               _editTodoTitleDialog(context, todo);
             },
           ),
           IconButton(
-            icon: Icon(Icons.delete),
+            icon: Icon(
+              Icons.delete,
+              color: Colors.red,
+            ),
             onPressed: () {
               deleteTodo(todo.title);
             },
