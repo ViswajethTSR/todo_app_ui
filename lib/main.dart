@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'dart:convert';
-import 'package:viswa_todo_app/models/items.dart';
-
-import 'package:viswa_todo_app/custom_designs/app_bar_clipper.dart';
+import 'package:viswa_todo_app/screens/map_screen.dart';
 import 'package:viswa_todo_app/screens/todo.dart';
 import 'package:viswa_todo_app/screens/web_socket.dart';
 
@@ -37,6 +33,7 @@ class _MainAppState extends State<MainApp> {
   final List<Widget> _screens = [
     TodoList(),
     WebSocket(),
+    MapPage(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -58,6 +55,7 @@ class _MainAppState extends State<MainApp> {
               icon: Icon(Icons.calendar_today_outlined), label: "Todo "),
           BottomNavigationBarItem(
               icon: Icon(Icons.webhook), label: "Websocket"),
+          BottomNavigationBarItem(icon: Icon(Icons.place_sharp), label: "Maps")
         ],
         unselectedItemColor: Colors.purple.shade300,
         selectedItemColor: Colors.purple.shade400,
