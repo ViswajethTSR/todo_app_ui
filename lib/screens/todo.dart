@@ -136,8 +136,6 @@ class _TodoListState extends State<TodoList> {
   FloatingActionButton buildAddTaskButton(BuildContext context) {
     return FloatingActionButton(
       elevation: 20,
-      backgroundColor: Colors.blue,
-      highlightElevation: 200,
       onPressed: () {
         showDialog(
           context: context,

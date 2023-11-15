@@ -17,6 +17,7 @@ class _MapPageState extends State<MapPage> {
   final channel = IOWebSocketChannel.connect('ws://$wsIP:$wsPORT');
   late Completer<GoogleMapController> _controller;
   late Marker _marker;
+  List<LatLng> _polylinePoints = [];
   late LatLng _currentPosition;
 
   @override
@@ -31,23 +32,17 @@ class _MapPageState extends State<MapPage> {
     );
 
     channel.stream.listen((data) {
-      // Parse received JSON data
       Map<String, dynamic> location = jsonDecode(data);
-
-      // Move the marker smoothly to the new position
-      moveMarkerToPosition(LatLng(location['latitude'], location['longitude']));
+      updateMarkerAndPolyline(
+          LatLng(location['latitude'], location['longitude']));
     });
   }
 
-  void moveMarkerToPosition(LatLng newPosition) async {
-    // Animate the movement over 1 second
+  void updateMarkerAndPolyline(LatLng newPosition) async {
     final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(
-      CameraPosition(
-        target: newPosition,
-        zoom: 15.0,
-      ),
-    ));
+
+    // Animate the movement over 1 second
+    controller.animateCamera(CameraUpdate.newLatLng(newPosition));
 
     final int steps = 100;
     final double latStep =
@@ -65,12 +60,29 @@ class _MapPageState extends State<MapPage> {
             _currentPosition.longitude + i * lngStep,
           ),
         );
+
+        _polylinePoints.add(_marker.position);
       });
     }
 
     setState(() {
       _currentPosition = newPosition;
     });
+  }
+
+  Set<Polyline> buildPolyline() {
+    if (_polylinePoints.length < 2) {
+      return Set();
+    }
+
+    return {
+      Polyline(
+        polylineId: PolylineId('polyline'),
+        color: Colors.blue,
+        width: 5,
+        points: _polylinePoints,
+      )
+    };
   }
 
   @override
@@ -83,8 +95,8 @@ class _MapPageState extends State<MapPage> {
 
   GoogleMap buildBody() {
     return GoogleMap(
-      // mapType: MapType.satellite,
       markers: Set.of([_marker]),
+      polylines: buildPolyline(),
       initialCameraPosition: CameraPosition(
         target: _currentPosition,
         zoom: 12.0,

@@ -58,7 +58,7 @@ class _MainAppState extends State<MainApp> {
           BottomNavigationBarItem(icon: Icon(Icons.place_sharp), label: "Maps")
         ],
         unselectedItemColor: Colors.purple.shade300,
-        selectedItemColor: Colors.purple.shade400,
+        selectedItemColor: Colors.purple.shade700,
       ),
     );
   }
