@@ -38,7 +38,7 @@ class _MapPageState extends State<MapPage> {
     });
   }
 
-  void updateMarkerAndPolyline(LatLng newPosition) async {
+  Future<void> updateMarkerAndPolyline(LatLng newPosition) async {
     final GoogleMapController controller = await _controller.future;
 
     // Animate the movement over 1 second
