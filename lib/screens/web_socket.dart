@@ -17,7 +17,7 @@ class _WebSocketState extends State<WebSocket> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar('Web Socket Datas'),
+      appBar: buildAppBarForNormalPage('Web Socket Datas'),
       body: buildBody(),
       floatingActionButton: buildSendDataButton(),
     );

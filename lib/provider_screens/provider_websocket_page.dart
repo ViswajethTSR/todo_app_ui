@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:viswa_todo_app/app_provider/provider_practices.dart';
+import 'package:viswa_todo_app/app_provider/location_provider.dart';
 import 'package:viswa_todo_app/custom_designs/custom_app_bar.dart';
 import 'package:viswa_todo_app/screens/web_socket.dart';
 import 'package:web_socket_channel/io.dart';
@@ -21,7 +21,7 @@ class _ProviderWebSocketPageState extends State<ProviderWebSocketPage> {
   void initState() {
     super.initState();
 
-    final locationProvider = Provider.of<ProviderPractices>(context, listen: false);
+    final locationProvider = Provider.of<LocationProvider>(context, listen: false);
     locationProvider.messages = [];
     channel.stream.listen((data) {
       try {
@@ -41,10 +41,10 @@ class _ProviderWebSocketPageState extends State<ProviderWebSocketPage> {
 
   @override
   Widget build(BuildContext context) {
-    final locationProvider = Provider.of<ProviderPractices>(context);
+    final locationProvider = Provider.of<LocationProvider>(context);
 
     return Scaffold(
-      appBar: buildAppBar("ProviderWebSocketPage"),
+      appBar: buildAppBarForNormalPage("ProviderWebSocketPage"),
       body: Center(
         child: Column(
           children: [

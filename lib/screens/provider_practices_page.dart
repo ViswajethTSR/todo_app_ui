@@ -15,7 +15,7 @@ class _ProviderPracticesPageState extends State<ProviderPracticesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar("Provider Practices"),
+      appBar: buildAppBarForNormalPage("Provider Practices"),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

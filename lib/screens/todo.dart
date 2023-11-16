@@ -254,7 +254,7 @@ class _TodoListState extends State<TodoList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar('TaskTrak'),
+      appBar: buildAppBarForNormalPage('TaskTrak'),
       body: buildBody(),
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: buildAddTaskButton(context),

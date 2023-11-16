@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:viswa_todo_app/custom_designs/custom_app_bar.dart';
 import 'package:viswa_todo_app/screens/web_socket.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -92,41 +93,8 @@ class _MapPageState extends State<MapPage> {
           Center(
             child: CircularProgressIndicator(),
           ),
-        buildAppBar()
+        buildAppBarForMaps("Map with WebSocket")
       ],
-    );
-  }
-
-  Widget buildAppBar() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(40, 70, 40, 0),
-      child: Container(
-        child: Center(
-          child: Text(
-            'Map with WebSocket',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-              fontFamily: 'Serif',
-            ),
-          ),
-        ),
-        height: 40,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-          shape: BoxShape.rectangle,
-          gradient: LinearGradient(
-            colors: [
-              Colors.white10,
-              Colors.white10,
-              Colors.white10,
-            ],
-          ),
-          boxShadow: [
-            BoxShadow(color: Colors.grey.shade300),
-          ],
-        ),
-      ),
     );
   }
 
