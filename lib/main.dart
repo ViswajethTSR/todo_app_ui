@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:viswa_todo_app/app_provider/provider_practices.dart';
 import 'package:viswa_todo_app/screens/map_screen.dart';
-import 'package:viswa_todo_app/screens/practice_page.dart';
+import 'package:viswa_todo_app/screens/provider_websocket_page.dart';
 import 'package:viswa_todo_app/screens/todo.dart';
 import 'package:viswa_todo_app/screens/web_socket.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ProviderPractices(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -35,7 +42,7 @@ class _MainAppState extends State<MainApp> {
     TodoList(),
     WebSocket(),
     MapPage(),
-    PraticePage(),
+    ProviderPracticesPage(),
   ];
   @override
   Widget build(BuildContext context) {

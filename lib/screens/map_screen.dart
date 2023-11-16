@@ -17,6 +17,7 @@ class _MapPageState extends State<MapPage> {
   late Marker _marker;
   List<LatLng> _polylinePoints = [];
   late LatLng _currentPosition;
+  bool _mapLoaded = false;
 
   @override
   void initState() {
@@ -28,11 +29,6 @@ class _MapPageState extends State<MapPage> {
       position: _currentPosition,
       infoWindow: InfoWindow(title: 'Marker'),
     );
-
-    channel.stream.listen((data) {
-      Map<String, dynamic> location = jsonDecode(data);
-      updateMarkerAndPolyline(LatLng(location['latitude'], location['longitude']));
-    });
   }
 
   Future<void> updateMarkerAndPolyline(LatLng newPosition) async {
@@ -41,12 +37,12 @@ class _MapPageState extends State<MapPage> {
     // Animate the movement over 1 second
     controller.animateCamera(CameraUpdate.newLatLng(newPosition));
 
-    final int steps = 100;
+    final int steps = 50;
     final double latStep = (newPosition.latitude - _currentPosition.latitude) / steps;
     final double lngStep = (newPosition.longitude - _currentPosition.longitude) / steps;
 
     for (int i = 1; i <= steps; i++) {
-      await Future.delayed(Duration(milliseconds: (1000 / steps).round()));
+      await Future.delayed(Duration(milliseconds: (2000 / steps).round()));
 
       setState(() {
         _marker = _marker.copyWith(
@@ -91,48 +87,87 @@ class _MapPageState extends State<MapPage> {
   Widget buildBody() {
     return Stack(
       children: [
-        GoogleMap(
-          markers: Set.of([_marker]),
-          polylines: buildPolyline(),
-          initialCameraPosition: CameraPosition(
-            target: _currentPosition,
-            zoom: 12.0,
+        buildGoogleMap(),
+        if (!_mapLoaded)
+          Center(
+            child: CircularProgressIndicator(),
           ),
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
-        ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(40, 70, 40, 0),
-          child: Container(
-            child: Center(
-              child: Text(
-                'Map with WebSocket',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  fontFamily: 'Serif',
-                ),
-              ),
-            ),
-            height: 40,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-              shape: BoxShape.rectangle,
-              gradient: LinearGradient(
-                colors: [
-                  Colors.white10,
-                  Colors.white10,
-                  Colors.white10,
-                ],
-              ),
-              boxShadow: [
-                BoxShadow(color: Colors.grey.shade300),
-              ],
-            ),
-          ),
-        )
+        buildAppBar()
       ],
+    );
+  }
+
+  Widget buildAppBar() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(40, 70, 40, 0),
+      child: Container(
+        child: Center(
+          child: Text(
+            'Map with WebSocket',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              fontFamily: 'Serif',
+            ),
+          ),
+        ),
+        height: 40,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          shape: BoxShape.rectangle,
+          gradient: LinearGradient(
+            colors: [
+              Colors.white10,
+              Colors.white10,
+              Colors.white10,
+            ],
+          ),
+          boxShadow: [
+            BoxShadow(color: Colors.grey.shade300),
+          ],
+        ),
+      ),
+    );
+  }
+
+  GoogleMap buildGoogleMap() {
+    return GoogleMap(
+      markers: Set.of([_marker]),
+      polylines: buildPolyline(),
+      initialCameraPosition: CameraPosition(
+        target: _currentPosition,
+        zoom: 12.0,
+      ),
+      onMapCreated: (GoogleMapController controller) {
+        _controller.complete(controller);
+        setState(() {
+          _mapLoaded = true;
+        });
+        startListeningToWebSocket();
+      },
+    );
+  }
+
+  void startListeningToWebSocket() {
+    channel.stream.listen(
+      (data) {
+        if (_mapLoaded) {
+          print('Received WebSocket data: $data');
+          try {
+            Map<String, dynamic> location = jsonDecode(data);
+            print('Decoded location: $location');
+            updateMarkerAndPolyline(LatLng(location['latitude'], location['longitude']));
+          } catch (e) {
+            print('Error decoding JSON: $e');
+          }
+        }
+      },
+      onError: (error) {
+        print('WebSocket error: $error');
+      },
+      onDone: () {
+        print('WebSocket channel closed.');
+      },
     );
   }
 
