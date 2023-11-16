@@ -43,7 +43,6 @@ class _MainAppState extends State<MainApp> {
       appBar: null,
       body: _screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        // fixedColor: Colors.purple,
         elevation: 20,
         enableFeedback: true,
         currentIndex: _currentIndex,

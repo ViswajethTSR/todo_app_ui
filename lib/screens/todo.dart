@@ -176,9 +176,6 @@ class _TodoListState extends State<TodoList> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(5)),
-          // gradient: LinearGradient(
-          //   colors: [Colors.deepPurpleAccent, Colors.indigo],
-          // ),
         ),
         height: 650,
         child: ListView.builder(

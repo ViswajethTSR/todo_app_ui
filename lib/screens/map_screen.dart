@@ -2,12 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:viswa_todo_app/custom_designs/custom_app_bar.dart';
 import 'package:viswa_todo_app/screens/web_socket.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-import '../custom_designs/app_bar_clipper.dart';
 
 class MapPage extends StatefulWidget {
   @override
@@ -86,7 +83,7 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: buildAppBar('Map with WebSocket'),
+      appBar: null,
       body: buildBody(),
     );
   }
