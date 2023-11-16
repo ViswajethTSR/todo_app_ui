@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:viswa_todo_app/custom_designs/custom_app_bar.dart';
 import 'package:viswa_todo_app/screens/web_socket.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -33,8 +34,7 @@ class _MapPageState extends State<MapPage> {
 
     channel.stream.listen((data) {
       Map<String, dynamic> location = jsonDecode(data);
-      updateMarkerAndPolyline(
-          LatLng(location['latitude'], location['longitude']));
+      updateMarkerAndPolyline(LatLng(location['latitude'], location['longitude']));
     });
   }
 
@@ -45,10 +45,8 @@ class _MapPageState extends State<MapPage> {
     controller.animateCamera(CameraUpdate.newLatLng(newPosition));
 
     final int steps = 100;
-    final double latStep =
-        (newPosition.latitude - _currentPosition.latitude) / steps;
-    final double lngStep =
-        (newPosition.longitude - _currentPosition.longitude) / steps;
+    final double latStep = (newPosition.latitude - _currentPosition.latitude) / steps;
+    final double lngStep = (newPosition.longitude - _currentPosition.longitude) / steps;
 
     for (int i = 1; i <= steps; i++) {
       await Future.delayed(Duration(milliseconds: (1000 / steps).round()));
@@ -88,44 +86,56 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(),
+      // appBar: buildAppBar('Map with WebSocket'),
       body: buildBody(),
     );
   }
 
-  GoogleMap buildBody() {
-    return GoogleMap(
-      markers: Set.of([_marker]),
-      polylines: buildPolyline(),
-      initialCameraPosition: CameraPosition(
-        target: _currentPosition,
-        zoom: 12.0,
-      ),
-      onMapCreated: (GoogleMapController controller) {
-        _controller.complete(controller);
-      },
-    );
-  }
-
-  PreferredSize buildAppBar() {
-    return PreferredSize(
-      preferredSize: Size.fromHeight(80),
-      child: AppBar(
-        title: Text('Maps with WebSocket'),
-        centerTitle: true,
-        backgroundColor: Colors.blue, // Set your desired background color
-        // elevation: 0, // Remove the shadow below the app bar
-        flexibleSpace: ClipPath(
-          clipper: CustomShapeClipper(),
+  Widget buildBody() {
+    return Stack(
+      children: [
+        GoogleMap(
+          markers: Set.of([_marker]),
+          polylines: buildPolyline(),
+          initialCameraPosition: CameraPosition(
+            target: _currentPosition,
+            zoom: 12.0,
+          ),
+          onMapCreated: (GoogleMapController controller) {
+            _controller.complete(controller);
+          },
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(40, 70, 40, 0),
           child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.blue, Colors.purple],
+            child: Center(
+              child: Text(
+                'Map with WebSocket',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  fontFamily: 'Serif',
+                ),
               ),
             ),
+            height: 40,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              shape: BoxShape.rectangle,
+              gradient: LinearGradient(
+                colors: [
+                  Colors.white10,
+                  Colors.white10,
+                  Colors.white10,
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(color: Colors.grey.shade300),
+              ],
+            ),
           ),
-        ),
-      ),
+        )
+      ],
     );
   }
 

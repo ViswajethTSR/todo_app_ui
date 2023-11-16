@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:viswa_todo_app/screens/map_screen.dart';
+import 'package:viswa_todo_app/screens/practice_page.dart';
 import 'package:viswa_todo_app/screens/todo.dart';
 import 'package:viswa_todo_app/screens/web_socket.dart';
 
@@ -34,6 +35,7 @@ class _MainAppState extends State<MainApp> {
     TodoList(),
     WebSocket(),
     MapPage(),
+    PraticePage(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -41,6 +43,7 @@ class _MainAppState extends State<MainApp> {
       appBar: null,
       body: _screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        // fixedColor: Colors.purple,
         elevation: 20,
         enableFeedback: true,
         currentIndex: _currentIndex,
@@ -49,13 +52,11 @@ class _MainAppState extends State<MainApp> {
             _currentIndex = index;
           });
         },
-        backgroundColor: Colors.purple.shade200,
         items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.calendar_today_outlined), label: "Todo "),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.webhook), label: "Websocket"),
-          BottomNavigationBarItem(icon: Icon(Icons.place_sharp), label: "Maps")
+          BottomNavigationBarItem(icon: Icon(Icons.calendar_today_outlined), label: "Todo "),
+          BottomNavigationBarItem(icon: Icon(Icons.webhook), label: "Websocket"),
+          BottomNavigationBarItem(icon: Icon(Icons.place_sharp), label: "Maps"),
+          BottomNavigationBarItem(icon: Icon(Icons.cyclone), label: "ProviderPractice"),
         ],
         unselectedItemColor: Colors.purple.shade300,
         selectedItemColor: Colors.purple.shade700,

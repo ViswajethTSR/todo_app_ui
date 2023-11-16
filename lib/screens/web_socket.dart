@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
-
-import '../custom_designs/app_bar_clipper.dart';
+import '../custom_designs/custom_app_bar.dart';
 
 const wsIP = '64.227.166.14';
 const wsPORT = 1800;
@@ -18,10 +17,7 @@ class _WebSocketState extends State<WebSocket> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80.0),
-        child: buildAppBar(),
-      ),
+      appBar: buildAppBar('Web Socket Datas'),
       body: buildBody(),
       floatingActionButton: buildSendDataButton(),
     );
@@ -40,10 +36,8 @@ class _WebSocketState extends State<WebSocket> {
   Widget buildBody() {
     return Container(
       decoration: BoxDecoration(
+        color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(5)),
-        gradient: LinearGradient(
-          colors: [Colors.deepPurpleAccent, Colors.indigo],
-        ),
       ),
       child: Column(
         children: [
@@ -65,29 +59,9 @@ class _WebSocketState extends State<WebSocket> {
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child:
-                Text(messages.isEmpty ? 'Connecting...' : 'Received Messages:'),
+            child: Text(messages.isEmpty ? 'Connecting...' : 'Received Messages:'),
           ),
         ],
-      ),
-    );
-  }
-
-  AppBar buildAppBar() {
-    return AppBar(
-      title: Text('Web socket datas'),
-      centerTitle: true,
-      backgroundColor: Colors.blue, // Set your desired background color
-      elevation: 0, // Remove the shadow below the app bar
-      flexibleSpace: ClipPath(
-        clipper: CustomShapeClipper(),
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.blue, Colors.purple],
-            ),
-          ),
-        ),
       ),
     );
   }

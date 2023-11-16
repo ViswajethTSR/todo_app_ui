@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import '../custom_designs/app_bar_clipper.dart';
+import '../custom_designs/custom_app_bar.dart';
 import '../models/items.dart';
 
 import 'package:http/http.dart' as http;
@@ -173,10 +174,11 @@ class _TodoListState extends State<TodoList> {
     return SingleChildScrollView(
       child: Container(
         decoration: BoxDecoration(
+          color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(5)),
-          gradient: LinearGradient(
-            colors: [Colors.deepPurpleAccent, Colors.indigo],
-          ),
+          // gradient: LinearGradient(
+          //   colors: [Colors.deepPurpleAccent, Colors.indigo],
+          // ),
         ),
         height: 650,
         child: ListView.builder(
@@ -252,32 +254,10 @@ class _TodoListState extends State<TodoList> {
     );
   }
 
-  PreferredSize buildAppBar() {
-    return PreferredSize(
-      preferredSize: Size.fromHeight(80.0),
-      child: AppBar(
-        title: Text('TaskTrak'),
-        centerTitle: true,
-        backgroundColor: Colors.blue, // Set your desired background color
-        elevation: 0, // Remove the shadow below the app bar
-        flexibleSpace: ClipPath(
-          clipper: CustomShapeClipper(),
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.blue, Colors.purple],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(),
+      appBar: buildAppBar('TaskTrak'),
       body: buildBody(),
       // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: buildAddTaskButton(context),
