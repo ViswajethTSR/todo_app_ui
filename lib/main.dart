@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:viswa_todo_app/app_provider/provider_practices.dart';
 import 'package:viswa_todo_app/screens/map_screen.dart';
-import 'package:viswa_todo_app/screens/provider_websocket_page.dart';
+import 'package:viswa_todo_app/screens/provider_practices_page.dart';
+import 'package:viswa_todo_app/provider_screens/provider_websocket_page.dart';
 import 'package:viswa_todo_app/screens/todo.dart';
 import 'package:viswa_todo_app/screens/web_socket.dart';
 
@@ -43,6 +44,7 @@ class _MainAppState extends State<MainApp> {
     WebSocket(),
     MapPage(),
     ProviderPracticesPage(),
+    ProviderWebSocketPage(),
   ];
   @override
   Widget build(BuildContext context) {

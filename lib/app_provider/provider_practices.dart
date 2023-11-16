@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ProviderPractices extends ChangeNotifier {
   double _latitude = 21.1458;
   double _longitude = 79.0882;
-  final List<String> messages = [];
+  late List<String> messages = [];
   double get latitude => _latitude;
   double get longitude => _longitude;
 

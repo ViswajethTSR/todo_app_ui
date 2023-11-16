@@ -9,12 +9,12 @@ import 'package:viswa_todo_app/screens/web_socket.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-class ProviderPracticesPage extends StatefulWidget {
+class ProviderWebSocketPage extends StatefulWidget {
   @override
-  _ProviderPracticesPageState createState() => _ProviderPracticesPageState();
+  _ProviderWebSocketPageState createState() => _ProviderWebSocketPageState();
 }
 
-class _ProviderPracticesPageState extends State<ProviderPracticesPage> {
+class _ProviderWebSocketPageState extends State<ProviderWebSocketPage> {
   final WebSocketChannel channel = IOWebSocketChannel.connect('ws://$wsIP:$wsPORT');
 
   @override
@@ -22,6 +22,7 @@ class _ProviderPracticesPageState extends State<ProviderPracticesPage> {
     super.initState();
 
     final locationProvider = Provider.of<ProviderPractices>(context, listen: false);
+    locationProvider.messages = [];
     channel.stream.listen((data) {
       try {
         Map<String, dynamic> location = jsonDecode(data);
