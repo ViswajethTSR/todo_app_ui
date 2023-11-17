@@ -42,7 +42,7 @@ class _ProviderPracticesPageState extends State<ProviderPracticesPage> {
       child: Container(
         height: 100,
         width: 130,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             color: Colors.white,
             gradient: LinearGradient(
               colors: [Colors.indigo, Colors.purple],
@@ -57,7 +57,7 @@ class _ProviderPracticesPageState extends State<ProviderPracticesPage> {
         child: Center(
           child: Text(
             title,
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
           ),
         ),
       ),

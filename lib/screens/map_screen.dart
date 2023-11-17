@@ -35,7 +35,7 @@ class _MapPageState extends State<MapPage> {
   Future<void> updateMarkerAndPolyline(LatLng newPosition) async {
     final GoogleMapController controller = await _controller.future;
 
-    // Animate the movement over 1 second
+    // Animate the movement over 2 second
     controller.animateCamera(CameraUpdate.newLatLng(newPosition));
 
     final int steps = 50;
@@ -90,7 +90,7 @@ class _MapPageState extends State<MapPage> {
       children: [
         buildGoogleMap(),
         if (!_mapLoaded)
-          Center(
+          const Center(
             child: CircularProgressIndicator(),
           ),
         buildAppBarForMaps("Map with WebSocket")

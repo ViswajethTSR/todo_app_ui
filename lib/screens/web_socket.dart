@@ -29,13 +29,13 @@ class _WebSocketState extends State<WebSocket> {
         channel.sink.add('Hello, WebSocket Server!');
       },
       tooltip: 'Send Message',
-      child: Icon(Icons.send),
+      child: const Icon(Icons.send),
     );
   }
 
   Widget buildBody() {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(Radius.circular(5)),
       ),

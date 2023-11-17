@@ -12,7 +12,7 @@ PreferredSize buildAppBarForNormalPage(String title) {
       flexibleSpace: ClipPath(
         clipper: CustomShapeClipper(),
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Colors.indigo, Colors.purple],
             ),
@@ -27,21 +27,11 @@ Widget buildAppBarForMaps(String title) {
   return Padding(
     padding: const EdgeInsets.fromLTRB(40, 70, 40, 0),
     child: Container(
-      child: Center(
-        child: Text(
-          title,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-            fontFamily: 'Serif',
-          ),
-        ),
-      ),
       height: 40,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
         shape: BoxShape.rectangle,
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           colors: [
             Colors.white10,
             Colors.white10,
@@ -51,6 +41,16 @@ Widget buildAppBarForMaps(String title) {
         boxShadow: [
           BoxShadow(color: Colors.grey.shade300),
         ],
+      ),
+      child: Center(
+        child: Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            fontFamily: 'Serif',
+          ),
+        ),
       ),
     ),
   );

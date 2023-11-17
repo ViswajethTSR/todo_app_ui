@@ -1,8 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-
-import '../custom_designs/app_bar_clipper.dart';
 import '../custom_designs/custom_app_bar.dart';
 import '../models/items.dart';
 
@@ -173,7 +171,7 @@ class _TodoListState extends State<TodoList> {
   Widget buildBody() {
     return SingleChildScrollView(
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(5)),
         ),
@@ -188,7 +186,7 @@ class _TodoListState extends State<TodoList> {
                 height: 80,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.all(
+                  borderRadius: const BorderRadius.all(
                     Radius.circular(12),
                   ),
                   boxShadow: [
@@ -229,7 +227,7 @@ class _TodoListState extends State<TodoList> {
         mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.edit,
               color: Colors.indigo,
             ),
@@ -238,7 +236,7 @@ class _TodoListState extends State<TodoList> {
             },
           ),
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.delete,
               color: Colors.red,
             ),
