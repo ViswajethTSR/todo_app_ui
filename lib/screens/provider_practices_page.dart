@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:viswa_todo_app/custom_designs/custom_app_bar.dart';
 import 'package:viswa_todo_app/provider_screens/provider_websocket_page.dart';
+import 'package:viswa_todo_app/provider_screens/todo_provider_page.dart';
 
 import '../provider_screens/provider_map_page.dart';
 
@@ -20,6 +21,7 @@ class _ProviderPracticesPageState extends State<ProviderPracticesPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            buildNavigationPageButton(context, TodoProviderPage(), "ProviderTodoApp"),
             buildNavigationPageButton(context, ProviderWebSocketPage(), 'Open WebSocketPage'),
             buildNavigationPageButton(context, ProviderMapPage(), 'Open MapPage'),
           ],

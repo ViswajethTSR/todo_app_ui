@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:viswa_todo_app/app_provider/location_provider.dart';
 import 'package:viswa_todo_app/app_provider/map_provider.dart';
-import 'package:viswa_todo_app/provider_screens/todo_provider_page.dart';
 import 'package:viswa_todo_app/screens/map_screen.dart';
 import 'package:viswa_todo_app/screens/provider_practices_page.dart';
 import 'package:viswa_todo_app/screens/todo.dart';
@@ -53,7 +52,7 @@ class _MainAppState extends State<MainApp> {
   int _currentIndex = 0;
 
   final List<Widget> _screens = [
-    TodoProviderPage(),
+    TodoList(),
     WebSocket(),
     MapPage(),
     const ProviderPracticesPage(),

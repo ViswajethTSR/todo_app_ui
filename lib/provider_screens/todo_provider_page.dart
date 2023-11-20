@@ -41,7 +41,7 @@ class _TodoListState extends State<TodoList> {
     var todoProvider = Provider.of<TodoProvider>(context);
 
     return Scaffold(
-      appBar: buildAppBarForNormalPage('TaskTrak'),
+      appBar: buildAppBarForNormalPage('Provider TaskTrak'),
       body: todoProvider.buildBody(),
       floatingActionButton: todoProvider.buildAddTaskButton(context),
       extendBody: true,
