@@ -57,7 +57,7 @@ class _ProviderWebSocketPageState extends State<ProviderWebSocketPage> {
                     child: Card(
                       elevation: 5,
                       child: ListTile(
-                        title: Text(locationProvider.messages[index]),
+                        title: Text(locationProvider.messages[index] as String),
                       ),
                     ),
                   );

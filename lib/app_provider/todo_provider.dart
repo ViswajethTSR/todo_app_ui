@@ -1,39 +1,30 @@
+// todo_provider.dart
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import '../custom_designs/custom_app_bar.dart';
-import '../models/items.dart';
-
 import 'package:http/http.dart' as http;
+
+import '../models/items.dart';
 
 const api = 'http://64.227.166.14:3000';
 
-class TodoList extends StatefulWidget {
-  @override
-  _TodoListState createState() => _TodoListState();
-}
+class TodoProvider extends ChangeNotifier {
+  List<Todo> _todos = [];
+  TextEditingController _todoController = TextEditingController();
 
-class _TodoListState extends State<TodoList> {
-  List<Todo> todos = [];
-  TextEditingController todoController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    fetchTodos();
-  }
+  List<Todo> get todos => _todos;
+  TextEditingController get todoController => _todoController;
 
   Future<void> fetchTodos() async {
     final response = await http.get(Uri.parse('$api/get_todos'));
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
-      setState(() {
-        todos = data.map((item) => Todo.fromJson(item)).toList();
-      });
+      _todos = data.map((item) => Todo.fromJson(item)).toList();
+      notifyListeners();
     } else {
       throw Exception('Failed to load todos');
     }
+    notifyListeners();
   }
 
   Future<void> addTodo() async {
@@ -42,15 +33,16 @@ class _TodoListState extends State<TodoList> {
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode({'title': todoController.text, 'completed': false}),
+      body: jsonEncode({'title': _todoController.text, 'completed': false}),
     );
 
     if (response.statusCode == 201) {
-      fetchTodos();
-      todoController.clear();
+      await fetchTodos();
+      _todoController.clear();
     } else {
       throw Exception('Failed to add todo');
     }
+    notifyListeners();
   }
 
   Future<void> _editTodoTitleDialog(BuildContext context, Todo todo) async {
@@ -84,6 +76,7 @@ class _TodoListState extends State<TodoList> {
         );
       },
     );
+    notifyListeners();
   }
 
   Future<void> updateTodoTitle(String currentTitle, String newTitle) async {
@@ -100,6 +93,7 @@ class _TodoListState extends State<TodoList> {
     } else {
       throw Exception('Failed to update todo title');
     }
+    notifyListeners();
   }
 
   Future<void> updateTodoState(String id, bool completed) async {
@@ -116,6 +110,7 @@ class _TodoListState extends State<TodoList> {
     } else {
       throw Exception('Failed to update todo');
     }
+    notifyListeners();
   }
 
   Future<void> deleteTodo(String title) async {
@@ -130,42 +125,7 @@ class _TodoListState extends State<TodoList> {
     } catch (error) {
       print('Error deleting todo: $error');
     }
-  }
-
-  FloatingActionButton buildAddTaskButton(BuildContext context) {
-    return FloatingActionButton(
-      elevation: 20,
-      onPressed: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Add Todo'),
-              content: TextField(
-                controller: todoController,
-                decoration: InputDecoration(labelText: 'Todo'),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('Cancel'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                TextButton(
-                  child: Text('Add'),
-                  onPressed: () {
-                    addTodo();
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      },
-      child: Icon(Icons.add),
-    );
+    notifyListeners();
   }
 
   Widget buildBody() {
@@ -197,7 +157,7 @@ class _TodoListState extends State<TodoList> {
                     )
                   ],
                 ),
-                child: buildCards(todo),
+                child: buildCards(context, todo),
               ),
             );
           },
@@ -206,7 +166,7 @@ class _TodoListState extends State<TodoList> {
     );
   }
 
-  ListTile buildCards(Todo todo) {
+  Widget buildCards(BuildContext context, Todo todo) {
     return ListTile(
       title: Text(
         todo.title,
@@ -249,13 +209,39 @@ class _TodoListState extends State<TodoList> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: buildAppBarForNormalPage('TaskTrak'),
-      body: buildBody(),
-      floatingActionButton: buildAddTaskButton(context),
-      extendBody: true,
+  FloatingActionButton buildAddTaskButton(BuildContext context) {
+    return FloatingActionButton(
+      elevation: 20,
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Add Todo'),
+              content: TextField(
+                controller: _todoController,
+                decoration: InputDecoration(labelText: 'Todo'),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Cancel'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: Text('Add'),
+                  onPressed: () {
+                    addTodo();
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+      child: Icon(Icons.add),
     );
   }
 }
